@@ -28,7 +28,7 @@ Selecting the option to update an employee role prompts the user to select an em
 * npm
 * inquirer
 * mysql2
-* console.table package
+* console.table
 
 ## Usage
 Provide options for business owners to organize information pertinent to personnel.
