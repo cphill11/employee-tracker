@@ -1,3 +1,5 @@
+const db = require('../../db/connection');
+
 // // notes from u-develop-it 
 // const express = require('express');
 // const router = express.Router();
