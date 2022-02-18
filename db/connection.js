@@ -3,9 +3,9 @@ const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  // Your MySQL username,
+  // MySQL username,
   user: 'root',
-  // Your MySQL password
+  // MySQL password
   password: '',
   database: 'roster'
 });
