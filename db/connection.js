@@ -1,14 +1,17 @@
-// notes from u-develop-it
 // Connect to database
-// const mysql = require('mysql2');
+const mysql = require('mysql2');
 
-// const db = mysql.createConnection({
-//   host: 'localhost',
-//   // Your MySQL username,
-//   user: 'root',
-//   // Your MySQL password
-//   password: '',
-//   database: 'election'
-// });
+const connection = mysql.createConnection({
+  host: 'localhost',
+  // Your MySQL username,
+  user: 'root',
+  // Your MySQL password
+  password: '',
+  database: 'roster'
+});
 
-// module.exports = db;
+connection.connect(function(err) {
+    if (err) throw err;
+});
+
+module.exports = connection;
