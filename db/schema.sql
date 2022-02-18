@@ -1,11 +1,15 @@
+DROP DATABASE IF EXISTS roster;
+CREATE DATABASE roster;
+USE roster;
+
 CREATE TABLE department (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
   -- hold department name
   name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL (10,2) NOT NULL,
   department_id INTEGER,
@@ -19,7 +23,7 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   role_id INTEGER NULL,
   INDEX role_ind (role_id),
-  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE SET NULL,
-  manager_id INTEGER NULL,
-  CONSTRAINT fk_employee FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
+  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE SET NULL
+  -- manager_id INTEGER NULL
+  -- CONSTRAINT fk_employee FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );

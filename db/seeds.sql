@@ -13,9 +13,15 @@ VALUES
     ('Salesman', 35000, 2)
 ;
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employee (first_name, last_name, role_id)
 VALUES
-    ('Bertha', 'Jorkins', 4, 2),
-    ('Mathilda', 'Bagshot', 3, 1),
-    ('Wilber', 'Wilkinson', 2, 1)
+    ('Bertha', 'Jorkins', 4),
+    ('Mathilda', 'Bagshot', 3),
+    ('Wilber', 'Wilkinson', 2)
 ;
+-- INSERT INTO employee (first_name, last_name role_id, manager_id)
+-- VALUES
+--     ('Bertha', 'Jorkins', 4, 2),
+--     ('Mathilda', 'Bagshot', 3, 1),
+--     ('Wilber', 'Wilkinson', 2, 1)
+-- ;
