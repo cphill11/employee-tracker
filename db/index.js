@@ -30,13 +30,48 @@ class DB {
             )
         })
     }
-    // displays roles table
-
+    // method to enable display of the roles table
     findRoles() {
         return new Promise ((resolve, reject) => {
-            this.connection.query('SELECT')
-        }) 
+            this.connection.query('SELECT INSERT role.title, role.salary, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id',
+            (error, data) => {
+                resolve(data);
+            }
+        )
+    })
+
+    // method to enable adding a new employee to the table
+    addNewEmployee(employee) {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('INSERT INTO employee SET ?', employee,
+            (error, data) => {
+                resolve(data);
+            }
+        )
+    })
     }
+    
+    // method to enable adding a new department to the table
+    addNewDepartment(department) {
+        return new Promise ((resolve, reject) => {
+            this.conneciton.query('INSERT INTO department SET ?', department,
+            (error, data) => {
+                resolve(data);
+            }
+        )
+    })
+    }
+    // method to add new role to table
+    addNewRole(role) {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('INSERT INTO role SET ?', role,
+            (error, data) => {
+                resolve(data);
+            })
+        })
+    }
+
+    // method to update the employee table
 }
 
 module.exports = new DB(connection);

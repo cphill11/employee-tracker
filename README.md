@@ -29,6 +29,7 @@ Selecting the option to update an employee role prompts the user to select an em
 * inquirer
 * mysql2
 * console.table
+* path
 
 ## Usage
 Provide options for business owners to organize information pertinent to personnel.
