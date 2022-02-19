@@ -1,5 +1,4 @@
 const cTable = require('console.table');
-//require Inquirer
 const inquirer = require('inquirer');
 
 // require MySQL
@@ -104,16 +103,228 @@ function employeeOrBack() {
                     name: 'Go back',
                     value: 'back'
                 }
-            ]).then((response) => {
-                switch (response.employeeOrBack) {
-                    case 'addEmployeeChoice':
-                        addEmployee();
-                        break;
-                    case 'updateEmployeeChoice':
-                        updateEmployee();
-                        break;
-                    case 'back':
-                        directory();
+            ]
+        }
+        ]).then((response) => {
+            switch (response.employeeOrBack) {
+                case 'addEmployeeChoice':
+                    addEmployee();
+                    break;
+                case 'updateEmployeeChoice':
+                    updateEmployee();
+                    break;
+                case 'back':
+                    directory();
                 }
             })
         };
+// After viewing the roles, decide to either add a role or return to the directory
+function roleOrBack() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'roleOrBack',
+            message: 'Would you like to add a Role?',
+            choices: [
+                {
+                    name: 'Add a Role',
+                    value: 'addRoleChoice'
+                },
+                {
+                    name: 'Go back',
+                    value: 'back'
+                }
+            ]
+        }
+    ]).then((response) => {
+        switch (response.roleOrBack) {
+            case 'addRoleChoice':
+                addRole();
+                break;
+            case 'back':
+                directory();
+        }
+    })
+};
+
+// when viewing all departments, presents a formatted table showing department names and department ids
+function viewDepartments() {
+    db.findDepartments()
+    .then((departments) => {
+        console.table(departments);
+        departmentsOrBack();
+    })
+}
+
+// when adding a department, prompts the user to enter the name of the department and that department is added to the db
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addDep',
+            message: 'What department would you like to add?'
+        }
+    ]).then((answers) => {
+        let department = {
+            dep_name: answers.addDep
+        }
+        db.newDepartment(department)
+    }).then(() => {
+        // does this need double quotes??
+        console.log('Added department to database!');
+        directory();
+    })
+}
+
+// when viewing all roles, presents the job title, role id, the department that role belongs to, and the salary for that role
+function viewRoles() {
+    db.findRoles()
+        .then((role) => {
+            console.table(role);
+            roleOrBack();
+        })
+}
+
+// when adding a role, prompts the user to enter the name, salary, and department for the role and that role is added to the database
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addRole',
+            message: 'What role would you like to add?'
+        },
+        {
+            type: 'input',
+            name: 'addSalary',
+            message: 'How much salary does this role make?'
+        }
+    ]).then((roleSalaryAnswers) => {
+        let title = roleSalaryAnswers.addRole
+        let salary = roleSalaryAnswers.addSalary
+        db.findDepartments()
+            .then((departments) => {
+                const departmentOptions = departments.map(({ id, name }) => ({
+                    name: name,
+                    value: id
+                }))
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'addRoleDep',
+                        message: 'What department does this role belong to?',
+                        choices: departmentOptions
+                    }
+                ]).then((answers) => {
+                    let role = {
+                        title: title,
+                        salary: salary,
+                        department_id: answers.addRoleDep
+                    }
+                    db.newRole(role)
+                    console.log("Added new role to the database");
+                    directory();
+                })
+            })
+    })
+}
+
+// when viewing all employees, presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that employees report to
+function viewEmployees() {
+    db.findEmployees()
+        .then((employees) => {
+            console.table(employees);
+            empoyeeOrBack();
+        })
+}
+
+// when adding an employee, prompts the user to enter the employee's first name, last name, as well as manager, adding the employee to the database
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addEmployeeFirstName',
+            message: 'What is the first name of the Employee?'
+        },
+        {
+            type: 'input',
+            name: 'addEmployeeLastName',
+            message: 'What is the last name of the Employee?'
+        }
+    ]).then((answers) => {
+        let first_name = answers.addEmployeeFirstName
+        let last_name = answers.addEmployeeLastName
+        db.findRoles()
+            .then((roles) => {
+                const roleOptions = roles.map(({ id, title }) => ({
+                    name: title,
+                    value: id
+                }))
+            
+                inquirer.prompt([
+                    {
+                        type: 'list'
+                        name: 'addEmployeeRole',
+                        message: 'What is the role of the Employee?',
+                        choices: roleOptions
+                    }
+                ]).then((answers) => {
+                    let roleID = answers.addEmployeeRole
+                    db.findEmployees()
+                        .then((employees) => {
+                            const managerOptions = employees.map(({ id, first_name, last_name }) => ({
+                                name: first_name + ' ' + last_name,
+                                value: id
+                            }))
+
+                            inquirer.prompt([
+                                {
+                                     /// INSERT MISSING TEXT HERE 283-316///
+                                }
+                            ])
+
+
+                        // 316
+                        inquirer.prompt([
+                            {
+                                type: 'list',
+                                name: 'updateEmployeeChoice',
+                                message: 'Which employee would you like to update?',
+                                choices: updateOptions
+                            }
+                        ]).then ((role) => {
+                            console.log(role)
+                            const updateRoleOptions = role.map(({ id, title, salary, department_id }) => {
+                                name: title,
+                                value: id,
+                                salary: salary,
+                                department_id: department_id
+                            }))
+                            let chosenEmployee = answers.updateEmployeeChoice
+                            inquirer.prompt([
+                                {
+                                    type: 'list',
+                                    name: 'updateEmployeeRole',
+                                    message: 'What is their new role?',
+                                    choices: updateRoleOptions
+                                }
+                            ]).then((answers) => {
+                                let newRoleID = {
+                                    first_name: chosenEmploye.first_name,
+                                    role_id: answers.updateEmployeeRole,
+                                    salaray: salary,
+                                    department_id: department_id
+                                }
+                                db.updateEmployee(newRoleID)
+                            })
+                        }).then(() => {
+                            // does this need double quotes?
+                            console.log('updated employee in the database');
+                            directory();
+                        })
+                    })
+                })
+            })
+    })
+}
+
+directory();
