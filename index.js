@@ -58,11 +58,11 @@ function departmentOrBack() {
             message: 'Would you like to add a Department?',
             choices: [
                 {
-                name: 'Add a Department',
-                value: 'addDepartmentChoice',
+                    name: 'Add a Department.',
+                    value: 'addDepartmentChoice',
                 },
                 {
-                    name: 'Go back',
+                    name: 'Go back.',
                     value: 'back'
                 }
             ]
@@ -147,7 +147,7 @@ function viewDepartments() {
     getNewData.findDepartments()
     .then((departments) => {
         console.table(departments);
-        departmentsOrBack();
+        departmentOrBack();
     })
 }
 
