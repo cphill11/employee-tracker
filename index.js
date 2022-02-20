@@ -1,17 +1,12 @@
-const cTable = require('console.table');
 const inquirer = require('inquirer');
-
-// require MySQL
+const cTable = require('console.table');
 const MySQL = require('mysql2');
-
-
+// const DB = require('./db');
+// const db = require('./db');
 //require db folder
 const getNewData = require("./db")
-// to do
 
-//directory function (one inquirer prompt what to do; see readme for laundry list of things to do)
-// bring in helper from db index.js
-
+// retrieves methods from promise method pool from db/index.js
 function directory() {
     inquirer.prompt([
         {
@@ -54,7 +49,8 @@ function directory() {
     })
 }
 
-// After viewing the department, decide to either add a department or....... play hopscotch (?)
+// After viewing the department, decide to either add a department or return to the directory
+
 function departmentOrBack() {
     inquirer.prompt([
         {
@@ -83,7 +79,7 @@ function departmentOrBack() {
     })
 };
 
-// After viewing the employees, decide to either add an employee or play hookie (???)
+// After viewing the employees, decide to either add an employee or return to the directory
 function employeeOrBack() {
     inquirer.prompt([
         {
@@ -262,7 +258,7 @@ function addEmployee() {
             
                 inquirer.prompt([
                     {
-                        type: 'list'
+                        type: 'list',
                         name: 'addEmployeeRole',
                         message: 'What is the role of the Employee?',
                         choices: roleOptions
@@ -275,56 +271,83 @@ function addEmployee() {
                                 name: first_name + ' ' + last_name,
                                 value: id
                             }))
-
-                            inquirer.prompt([
-                                {
-                                     /// INSERT MISSING TEXT HERE 283-316///
-                                }
-                            ])
-
-
-                        // 316
-                        inquirer.prompt([
-                            {
-                                type: 'list',
-                                name: 'updateEmployeeChoice',
-                                message: 'Which employee would you like to update?',
-                                choices: updateOptions
-                            }
-                        ]).then ((role) => {
-                            console.log(role)
-                            const updateRoleOptions = role.map(({ id, title, salary, department_id }) => {
-                                name: title,
-                                value: id,
-                                salary: salary,
-                                department_id: department_id
-                            }))
-                            let chosenEmployee = answers.updateEmployeeChoice
                             inquirer.prompt([
                                 {
                                     type: 'list',
-                                    name: 'updateEmployeeRole',
-                                    message: 'What is their new role?',
-                                    choices: updateRoleOptions
+                                    name: 'addEmployeeManager',
+                                    message: 'Who is the manager of the Employee?',
+                                    choices: managerOptions
                                 }
                             ]).then((answers) => {
-                                let newRoleID = {
-                                    first_name: chosenEmploye.first_name,
-                                    role_id: answers.updateEmployeeRole,
-                                    salaray: salary,
-                                    department_id: department_id
+                                let employee = {
+                                    manager_id: answers.addEmployeeManager,
+                                    role_id: roleID,
+                                    first_name: first_name,
+                                    last_name: last_name
                                 }
-                                db.updateEmployee(newRoleID)
+                                db.newEmployee(employee)
+                            }).then(() => {
+                                console.log("Added employee to the database!");
+                                directory();
                             })
-                        }).then(() => {
-                            // does this need double quotes?
-                            console.log('updated employee in the database');
-                            directory();
                         })
-                    })
                 })
+
             })
     })
+}
+
+// When updating an employee role, prompts the user to select an employee to update their new role and this information is updated in the database.
+
+function updateEmployee() {
+    db.findEmployees()
+        .then((employees) => {
+            const updateOptions = employees.map(({ id, first_name, last_name }) => ({
+                name: first_name + ' ' + last_name,
+                value: id
+            }))
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'updateEmployeeChoice',
+                    message: 'Which employee would you like to update?',
+                    choices: updateOptions
+                }
+            ]).then((emp_role) => {
+                let empvar = {};
+                for (let i = 0; i < employees.length; i++) {
+                    if (employees[i].id == emp_role.updateEmployeeChoice) {
+                        empvar = employees[i]
+                    }
+                }
+                db.findRoles()
+                    .then((roles) => {
+                        const roleOptions = roles.map(({ id, title }) => ({
+                            name: title,
+                            value: id
+                        }))
+                        inquirer.prompt([
+                            {
+                                type: 'list',
+                                name: 'updateEmployeeRole',
+                                message: 'What is their new role?',
+                                choices: roleOptions
+                            }
+                        ]).then((answers) => {
+                            let newRoleID = {
+                                role_id: answers.updateEmployeeRole,
+                                id: empvar.id
+                            }
+                            db.updateEmployee(newRoleID)
+                                .then(() => {
+                                    console.log("Updated the employee in the database!");
+                                    directory();
+                                })
+                        })
+                    })
+
+            })
+        })
 }
 
 directory();

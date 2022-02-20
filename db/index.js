@@ -4,13 +4,13 @@ const { resolve } = require('path/posix');
 //require connection
 const connection = require('./connection');
 
-//classDB
+//classDB functionality
 class DB {
     constructor(connection) {
         this.connection = connection;
     }
 
-    // method for department query
+    // method for department query      focus on view queries first to get used to the syntax, will make adding items easier for other tables
     findDepartments() {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM department', (error, data) => {
@@ -40,38 +40,38 @@ class DB {
         )
     })
 
-    // method to enable adding a new employee to the table
-    addNewEmployee(employee) {
-        return new Promise ((resolve, reject) => {
-            this.connection.query('INSERT INTO employee SET ?', employee,
-            (error, data) => {
-                resolve(data);
-            }
-        )
-    })
-    }
+    // // method to enable adding a new employee to the table
+    // addNewEmployee(employee) {
+    //     return new Promise ((resolve, reject) => {
+    //         this.connection.query('INSERT INTO employee SET ?', employee,
+    //         (error, data) => {
+    //             resolve(data);
+    //         }
+    //     )
+    // })
+    // }
     
-    // method to enable adding a new department to the table
-    addNewDepartment(department) {
-        return new Promise ((resolve, reject) => {
-            this.conneciton.query('INSERT INTO department SET ?', department,
-            (error, data) => {
-                resolve(data);
-            }
-        )
-    })
-    }
-    // method to add new role to table
-    addNewRole(role) {
-        return new Promise ((resolve, reject) => {
-            this.connection.query('INSERT INTO role SET ?', role,
-            (error, data) => {
-                resolve(data);
-            })
-        })
-    }
+    // // method to enable adding a new department to the table
+    // addNewDepartment(department) {
+    //     return new Promise ((resolve, reject) => {
+    //         this.conneciton.query('INSERT INTO department SET ?', department,
+    //         (error, data) => {
+    //             resolve(data);
+    //         }
+    //     )
+    // })
+    // }
+    // // method to add new role to table
+    // addNewRole(role) {
+    //     return new Promise ((resolve, reject) => {
+    //         this.connection.query('INSERT INTO role SET ?', role,
+    //         (error, data) => {
+    //             resolve(data);
+    //         })
+    //     })
+    // }
 
-    // method to update the employee table
+    // // method to update the employee table
 }
 
 module.exports = new DB(connection);

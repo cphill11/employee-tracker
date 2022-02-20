@@ -16,7 +16,6 @@ CREATE TABLE role (
   FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE SET NULL
 );
 
--- -- first 2 tables work
 CREATE TABLE employee (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
