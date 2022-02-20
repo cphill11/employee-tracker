@@ -1,8 +1,7 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 const MySQL = require('mysql2');
-// const DB = require('./db');
-// const db = require('./db');
+
 //require db folder
 const getNewData = require("./db")
 
@@ -145,7 +144,7 @@ function roleOrBack() {
 
 // when viewing all departments, presents a formatted table showing department names and department ids
 function viewDepartments() {
-    db.findDepartments()
+    getNewData.findDepartments()
     .then((departments) => {
         console.table(departments);
         departmentsOrBack();
@@ -164,7 +163,7 @@ function addDepartment() {
         let department = {
             dep_name: answers.addDep
         }
-        db.newDepartment(department)
+        getNewData.newDepartment(department)
     }).then(() => {
         // does this need double quotes??
         console.log('Added department to database!');
@@ -174,7 +173,7 @@ function addDepartment() {
 
 // when viewing all roles, presents the job title, role id, the department that role belongs to, and the salary for that role
 function viewRoles() {
-    db.findRoles()
+    getNewData.findRoles()
         .then((role) => {
             console.table(role);
             roleOrBack();
@@ -197,7 +196,7 @@ function addRole() {
     ]).then((roleSalaryAnswers) => {
         let title = roleSalaryAnswers.addRole
         let salary = roleSalaryAnswers.addSalary
-        db.findDepartments()
+        getNewData.findDepartments()
             .then((departments) => {
                 const departmentOptions = departments.map(({ id, name }) => ({
                     name: name,
@@ -216,7 +215,7 @@ function addRole() {
                         salary: salary,
                         department_id: answers.addRoleDep
                     }
-                    db.newRole(role)
+                    getNewData.newRole(role)
                     console.log("Added new role to the database");
                     directory();
                 })
@@ -226,7 +225,7 @@ function addRole() {
 
 // when viewing all employees, presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that employees report to
 function viewEmployees() {
-    db.findEmployees()
+    getNewData.findEmployees()
         .then((employees) => {
             console.table(employees);
             empoyeeOrBack();
@@ -249,7 +248,7 @@ function addEmployee() {
     ]).then((answers) => {
         let first_name = answers.addEmployeeFirstName
         let last_name = answers.addEmployeeLastName
-        db.findRoles()
+        getNewData.findRoles()
             .then((roles) => {
                 const roleOptions = roles.map(({ id, title }) => ({
                     name: title,
@@ -265,7 +264,7 @@ function addEmployee() {
                     }
                 ]).then((answers) => {
                     let roleID = answers.addEmployeeRole
-                    db.findEmployees()
+                    getNewData.findEmployees()
                         .then((employees) => {
                             const managerOptions = employees.map(({ id, first_name, last_name }) => ({
                                 name: first_name + ' ' + last_name,
@@ -285,7 +284,7 @@ function addEmployee() {
                                     first_name: first_name,
                                     last_name: last_name
                                 }
-                                db.newEmployee(employee)
+                                getNewData.newEmployee(employee)
                             }).then(() => {
                                 console.log("Added employee to the database!");
                                 directory();
@@ -300,7 +299,7 @@ function addEmployee() {
 // When updating an employee role, prompts the user to select an employee to update their new role and this information is updated in the database.
 
 function updateEmployee() {
-    db.findEmployees()
+    getNewData.findEmployees()
         .then((employees) => {
             const updateOptions = employees.map(({ id, first_name, last_name }) => ({
                 name: first_name + ' ' + last_name,
@@ -320,7 +319,7 @@ function updateEmployee() {
                         empvar = employees[i]
                     }
                 }
-                db.findRoles()
+                getNewData.findRoles()
                     .then((roles) => {
                         const roleOptions = roles.map(({ id, title }) => ({
                             name: title,
@@ -338,7 +337,7 @@ function updateEmployee() {
                                 role_id: answers.updateEmployeeRole,
                                 id: empvar.id
                             }
-                            db.updateEmployee(newRoleID)
+                            getNewData.updateEmployee(newRoleID)
                                 .then(() => {
                                     console.log("Updated the employee in the database!");
                                     directory();
