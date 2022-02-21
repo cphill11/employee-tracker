@@ -15,16 +15,32 @@ function directory() {
             message: 'What would you like to do?',
             choices: [
                 {
-                    name: 'View Department',
+                    name: 'View All Department',
                     value: 'view_departments'
                 },
                 {
-                    name: 'View Roles',
+                    name: 'View All Roles',
                     value: 'view_roles'
                 },
                 {
-                    name: 'View Employees',
+                    name: 'View All Employees',
                     value: 'view_employees'
+                },
+                {
+                    name: 'Add a Department',
+                    value: 'add_department'
+                },
+                {
+                    name: 'Add a Role',
+                    value: 'add_role'
+                },
+                {
+                    name: 'Add an Employee',
+                    value: 'add_employee'
+                },
+                {
+                    name: 'Update Employee Role',
+                    value: 'update_employee'
                 },
                 {
                     name: 'Quit',
@@ -34,14 +50,26 @@ function directory() {
         }
     ]).then((response) => {
         switch (response.directoryChoice) {
-            case 'view_employees':
-                viewEmployees();
+            case 'view_departments':
+                viewDepartments();
                 break;
             case 'view_roles':
                 viewRoles();
                 break;
-            case 'view_departments':
-                viewDepartments();
+            case 'view_employees':
+                viewEmployees();
+                break;            
+            case 'add_department':
+                addDepartment();
+                break;
+            case 'add_role':
+                addRole();
+                break;
+            case 'add_employee':
+                addEmployee();
+                break;
+            case 'update_employee':
+                updateEmployee();
                 break;
         }
     })
