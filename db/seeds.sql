@@ -6,7 +6,6 @@ VALUES
 
 INSERT INTO role (title, salary, department_id)
 VALUES
--- how to make salary into a usable amount (???)
     ('Manager', 50000, 3),
     ('Assistant', 30000, 1),
     ('Salesman', 35000, 2);

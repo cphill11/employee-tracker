@@ -12,9 +12,6 @@ Selecting the option to add a department prompts the user to enter the name of t
 
 Selecting the option to update an employee role prompts the user to select an employee to update and their new role and this information is updated in the database.
 
-
-
-
 ## Installation
 * npm
 * inquirer
