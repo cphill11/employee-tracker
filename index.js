@@ -2,7 +2,6 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 const MySQL = require('mysql2');
 
-//require db folder
 const getNewData = require('./db');
 const DB = require('./db');
 
@@ -75,8 +74,7 @@ function directory() {
     })
 }
 
-// After viewing the department, decide to either add a department or return to the directory
-
+// Department table initial functionality
 function departmentOrBack() {
     inquirer.prompt([
         {
@@ -105,7 +103,7 @@ function departmentOrBack() {
     })
 };
 
-// After viewing the employees, decide to either add an employee or return to the directory
+// Employee table initial functionality
 function employeeOrBack() {
     inquirer.prompt([
         {
@@ -140,7 +138,8 @@ function employeeOrBack() {
                 }
             })
         };
-// After viewing the roles, decide to either add a role or return to the directory
+
+// Role table initial functionality
 function roleOrBack() {
     inquirer.prompt([
         {
@@ -169,7 +168,7 @@ function roleOrBack() {
     })
 };
 
-// when viewing all departments, presents a formatted table showing department names and department ids
+// Department table display functionality 
 function viewDepartments() {
     getNewData.findDepartments()
     .then((departments) => {
@@ -178,26 +177,26 @@ function viewDepartments() {
     })
 }
 
-// when adding a department, prompts the user to enter the name of the department and that department is added to the db
+// Add Department to db functionality 
 function addDepartment() {
     inquirer.prompt([
         {
             type: 'input',
             name: 'addDep',
-            message: 'What department would you like to add?'
+            message: 'Department to add: '
         }
     ]).then((answers) => {
         let department = {
-            dep_name: answers.addDep
+            name: answers.addDep
         }
         getNewData.addNewDepartment(department)
     }).then(() => {
-        console.log('Added department to database!');
+        console.log('Department added to database');
         directory();
     })
 }
 
-// when viewing all roles, presents the job title, role id, the department that role belongs to, and the salary for that role
+// Role table display functionality 
 function viewRoles() {
     getNewData.findRoles()
         .then((role) => {
@@ -206,18 +205,18 @@ function viewRoles() {
         })
 }
 
-// when adding a role, prompts the user to enter the name, salary, and department for the role and that role is added to the database
+// Add Role to db functionality 
 function addRole() {
     inquirer.prompt([
         {
             type: 'input',
             name: 'addRole',
-            message: 'What role would you like to add?'
+            message: 'Role to be added to database: '
         },
         {
             type: 'input',
             name: 'addSalary',
-            message: 'How much salary does this role make?'
+            message: 'Salary for this role: '
         }
     ]).then((roleSalaryAnswers) => {
         let title = roleSalaryAnswers.addRole
@@ -242,14 +241,14 @@ function addRole() {
                         department_id: answers.addRoleDep
                     }
                     getNewData.addNewRole(role)
-                    console.log("Added new role to the database");
+                    console.log('New role added to database');
                     directory();
                 })
             })
     })
 }
 
-// when viewing all employees, presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that employees report to
+// Employee table display functionality 
 function viewEmployees() {
     getNewData.findEmployees()
         .then((employees) => {
@@ -258,18 +257,18 @@ function viewEmployees() {
         })
 }
 
-// when adding an employee, prompts the user to enter the employee's first name, last name, as well as manager, adding the employee to the database
+// Add employee to db functionality 
 function addEmployee() {
     inquirer.prompt([
         {
             type: 'input',
             name: 'addEmployeeFirstName',
-            message: 'What is the first name of the Employee?'
+            message: "Employee's first name: "
         },
         {
             type: 'input',
             name: 'addEmployeeLastName',
-            message: 'What is the last name of the Employee?'
+            message: "Employee's last name: "
         }
     ]).then((answers) => {
         let first_name = answers.addEmployeeFirstName
@@ -285,7 +284,7 @@ function addEmployee() {
                     {
                         type: 'list',
                         name: 'addEmployeeRole',
-                        message: 'What is the role of the Employee?',
+                        message: "Employee's role: ",
                         choices: roleOptions
                     }
                 ]).then((answers) => {
@@ -300,7 +299,7 @@ function addEmployee() {
                                 {
                                     type: 'list',
                                     name: 'addEmployeeManager',
-                                    message: 'Who is the manager of the Employee?',
+                                    message: "Employee's Manager: ",
                                     choices: managerOptions
                                 }
                             ]).then((answers) => {
@@ -310,9 +309,9 @@ function addEmployee() {
                                     first_name: first_name,
                                     last_name: last_name
                                 }
-                                getNewData.newEmployee(employee)
+                                getNewData.addNewEmployee(employee)
                             }).then(() => {
-                                console.log("Added employee to the database!");
+                                console.log('Employee added to database');
                                 directory();
                             })
                         })
@@ -322,8 +321,7 @@ function addEmployee() {
     })
 }
 
-// When updating an employee role, prompts the user to select an employee to update their new role and this information is updated in the database.
-
+// Update employee data functionality
 function updateEmployee() {
     getNewData.findEmployees()
         .then((employees) => {
@@ -338,10 +336,10 @@ function updateEmployee() {
                     message: 'Which employee would you like to update?',
                     choices: updateOptions
                 }
-            ]).then((emp_role) => {
+            ]).then((role) => {
                 let empvar = {};
                 for (let i = 0; i < employees.length; i++) {
-                    if (employees[i].id == emp_role.updateEmployeeChoice) {
+                    if (employees[i].id == role.updateEmployeeChoice) {
                         empvar = employees[i]
                     }
                 }
@@ -355,7 +353,7 @@ function updateEmployee() {
                             {
                                 type: 'list',
                                 name: 'updateEmployeeRole',
-                                message: 'What is their new role?',
+                                message: "Employee's new role: ",
                                 choices: roleOptions
                             }
                         ]).then((answers) => {
