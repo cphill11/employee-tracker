@@ -51,7 +51,7 @@ class DB {
     // method to enable adding a new department to the table
     addNewDepartment(department) {
         return new Promise ((resolve, reject) => {
-            this.conneciton.query('INSERT INTO department SET ?', department,
+            this.connection.query('INSERT INTO department SET ?', department,
             (error, data) => {
                 resolve(data);
             })
@@ -76,7 +76,7 @@ class DB {
                 resolve(data);
             })
         })
-    } 
+    }
 }
 
 module.exports = new DB(connection);

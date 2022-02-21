@@ -3,7 +3,8 @@ const cTable = require('console.table');
 const MySQL = require('mysql2');
 
 //require db folder
-const getNewData = require("./db")
+const getNewData = require('./db');
+const DB = require('./db');
 
 // retrieves methods from promise method pool from db/index.js
 function directory() {
@@ -42,8 +43,6 @@ function directory() {
             case 'view_departments':
                 viewDepartments();
                 break;
-            default:
-                quit();
         }
     })
 }
@@ -163,9 +162,8 @@ function addDepartment() {
         let department = {
             dep_name: answers.addDep
         }
-        getNewData.newDepartment(department)
+        getNewData.addNewDepartment(department)
     }).then(() => {
-        // does this need double quotes??
         console.log('Added department to database!');
         directory();
     })
@@ -215,7 +213,7 @@ function addRole() {
                         salary: salary,
                         department_id: answers.addRoleDep
                     }
-                    getNewData.newRole(role)
+                    getNewData.addNewRole(role)
                     console.log("Added new role to the database");
                     directory();
                 })
@@ -228,7 +226,7 @@ function viewEmployees() {
     getNewData.findEmployees()
         .then((employees) => {
             console.table(employees);
-            empoyeeOrBack();
+            employeeOrBack();
         })
 }
 
