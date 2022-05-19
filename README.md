@@ -26,6 +26,8 @@ Provide options for business owners to organize information pertinent to personn
 ## Website
 Github:  https://cphill11.github.io/employee-tracker/
 
+https://github.com/cphill11/employee-tracker.git
+
 Screencastify link: https://drive.google.com/file/d/1SY0HslbB1ZDxtMdc_XAlGYdc4vmDv-Qp/view
 
 ## Image
